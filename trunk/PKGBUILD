@@ -3,7 +3,7 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
 pkgbase=nvidia-390xx
-pkgname=(nvidia-390xx nvidia-390xx-dkms)
+pkgname=(nvidia-390xx-flat nvidia-390xx-dkms-flat)
 pkgver=390.87
 _extramodules=extramodules-flat
 pkgrel=4
@@ -52,7 +52,7 @@ build() {
     make SYSSRC=/usr/lib/modules/"${_kernver}/build" module
 }
 
-package_nvidia-390xx() {
+package_nvidia-390xx-flat() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
     depends=("nvidia-390xx-utils=${pkgver}" 'libglvnd')
 
@@ -67,7 +67,7 @@ package_nvidia-390xx() {
     install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 "${srcdir}/${_pkg}/LICENSE"
 }
 
-package_nvidia-390xx-dkms() {
+package_nvidia-390xx-dkms-flat() {
     pkgdesc="NVIDIA driver sources for linux, 390xx legacy branch"
     depends=('dkms' "nvidia-390xx-utils=$pkgver" 'libglvnd')
     optdepends=('linux-headers: Build the module for Arch kernel'
