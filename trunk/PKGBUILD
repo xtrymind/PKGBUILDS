@@ -16,9 +16,11 @@ license=('custom')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        kernel-4.16.patch)
+        kernel-4.16.patch
+        kernel-4.19.patch)
 sha256sums=('c7c07151e17f610af11f7870560d96c3a3ee9bb91ba1bb82fcc7b5d473d40b66'
-            '622ac792ec200b2239cb663c0010392118b78c9904973d82cd261165c16d6385')
+            '622ac792ec200b2239cb663c0010392118b78c9904973d82cd261165c16d6385'
+            'b9e26896f9e2c526b0f918ad6524a96e758c79a88ddfab63ddf49ed52457eba9')
 
 prepare() {
     sh "${_pkg}.run" --extract-only
@@ -27,6 +29,8 @@ prepare() {
     # Restore phys_to_dma support (still needed for 396.18)
     # https://bugs.archlinux.org/task/58074
     patch -Np1 -i ../kernel-4.16.patch
+    # https://github.com/xtrymind/flat-linux/commit/cde4c44d8769c1be16074c097592c46c7d64092b
+    patch -Np1 -i ../kernel-4.19.patch
 
     cp -a kernel kernel-dkms
     cd kernel-dkms
