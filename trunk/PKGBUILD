@@ -2,16 +2,16 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=nvidia-390xx
-pkgname=(nvidia-390xx nvidia-390xx-dkms)
+pkgbase=nvidia-390xx-flat
+pkgname=(nvidia-390xx-flat nvidia-390xx-flat-dkms)
 pkgver=390.87
-_extramodules=extramodules-ARCH
+_extramodules=extramodules-flat
 pkgrel=25
 pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=("nvidia-390xx-utils=${pkgver}" 'libglvnd' 'linux' 'linux-headers>=4.20' 'linux-headers<4.21')
-conflicts=('nvidia')
+makedepends=("nvidia-390xx-utils=${pkgver}" 'libglvnd')
+conflicts=('nvidia' 'nvidia-390xx')
 license=('custom')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
@@ -60,9 +60,9 @@ build() {
     make SYSSRC=/usr/lib/modules/"${_kernver}/build" module
 }
 
-package_nvidia-390xx() {
+package_nvidia-390xx-flat() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
-    depends=('linux>=4.20' 'linux<4.21' "nvidia-390xx-utils=${pkgver}" 'libglvnd')
+    depends=("nvidia-390xx-utils=${pkgver}" 'libglvnd')
 
     install -Dt "${pkgdir}/usr/lib/modules/${_extramodules}" -m644 \
       "${srcdir}/${_pkg}/kernel"/nvidia{,-modeset,-drm,-uvm}.ko
@@ -75,7 +75,7 @@ package_nvidia-390xx() {
     install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 "${srcdir}/${_pkg}/LICENSE"
 }
 
-package_nvidia-390xx-dkms() {
+package_nvidia-390xx-flat-dkms() {
     pkgdesc="NVIDIA driver sources for linux, 390xx legacy branch"
     depends=('dkms' "nvidia-390xx-utils=$pkgver" 'libglvnd')
     optdepends=('linux-headers: Build the module for Arch kernel'
