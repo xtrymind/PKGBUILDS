@@ -3,14 +3,14 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
 pkgbase=nvidia
-pkgname=(nvidia nvidia-dkms)
+pkgname=(nvidia-flat nvidia-flat-dkms)
 pkgver=415.27
-_extramodules=extramodules-ARCH
+_extramodules=extramodules-flat
 pkgrel=4
 pkgdesc="NVIDIA drivers for linux"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=("nvidia-utils=${pkgver}" 'libglvnd' 'linux' 'linux-headers>=4.20' 'linux-headers<4.21')
+makedepends=("nvidia-utils=${pkgver}" 'libglvnd')
 license=('custom')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
@@ -51,9 +51,10 @@ build() {
     make SYSSRC=/usr/lib/modules/"${_kernver}/build" module
 }
 
-package_nvidia() {
+package_nvidia-flat() {
     pkgdesc="NVIDIA drivers for linux"
-    depends=('linux>=4.20' 'linux<4.21' "nvidia-utils=${pkgver}" 'libglvnd')
+    depends=("nvidia-utils=${pkgver}" 'libglvnd')
+    conflicts+=('nvidia')
 
     install -Dt "${pkgdir}/usr/lib/modules/${_extramodules}" -m644 \
       "${srcdir}/${_pkg}/kernel"/nvidia{,-modeset,-drm,-uvm}.ko
@@ -66,13 +67,13 @@ package_nvidia() {
     install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 "${srcdir}/${_pkg}/LICENSE"
 }
 
-package_nvidia-dkms() {
+package_nvidia-flat-dkms() {
     pkgdesc="NVIDIA driver sources for linux"
     depends=('dkms' "nvidia-utils=$pkgver" 'libglvnd')
     optdepends=('linux-headers: Build the module for Arch kernel'
                 'linux-lts-headers: Build the module for LTS Arch kernel')
     provides=("nvidia=$pkgver")
-    conflicts+=('nvidia')
+    conflicts+=('nvidia' 'nvidia-dkms')
 
     cd ${_pkg}
 
