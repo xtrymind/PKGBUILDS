@@ -4,9 +4,9 @@
 
 pkgbase=nvidia-390xx-flat
 pkgname=(nvidia-390xx-flat nvidia-390xx-flat-dkms)
-pkgver=390.87
+pkgver=390.116
 _extramodules=extramodules-flat
-pkgrel=26
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -16,12 +16,9 @@ license=('custom')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        kernel-4.16.patch kernel-4.19.patch kernel-4.20.patch nvidia-drivers-usercopy.patch)
-sha256sums=('c7c07151e17f610af11f7870560d96c3a3ee9bb91ba1bb82fcc7b5d473d40b66'
-            '622ac792ec200b2239cb663c0010392118b78c9904973d82cd261165c16d6385'
-            'e425320bd3712cc789035d5936412724b0b410f50463980c0a48715fd3f8c431'
-            'deb45f7636dfebe938dffe566df9e9a5deeb47ccaf0bfe16a2884579b2524075'
-            'ba70688104a7f5f8b5444060b210f432f834d67c54bb141979c9a5840a5d555b')
+        kernel-4.16.patch)
+sha256sums=('de85a2eea39ca16e25645b345259b01fbe858b833286b7e6785afa273009ef6f'
+            '622ac792ec200b2239cb663c0010392118b78c9904973d82cd261165c16d6385')
 
 prepare() {
     sh "${_pkg}.run" --extract-only
@@ -30,15 +27,6 @@ prepare() {
     # Restore phys_to_dma support (still needed for 396.18)
     # https://bugs.archlinux.org/task/58074
     patch -Np1 -i ../kernel-4.16.patch
-
-    # Ad-hoc patch
-    patch -Np1 -i ../kernel-4.19.patch
-
-    # struct ipmi_user
-    patch -Np1 -i ../kernel-4.20.patch
-
-    # Nvidia kmem_cache
-    patch -Np1 -i ../nvidia-drivers-usercopy.patch
 
     cp -a kernel kernel-dkms
     cd kernel-dkms
