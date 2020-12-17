@@ -19,11 +19,13 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("https://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'kernel-4.16.patch'
         'kernel-5.8.patch'
-        'kernel-5.9.patch')
+        'kernel-5.9.patch'
+        'kernel-5.10.patch')
 b2sums=('bf56cef38d76accdf547b96cd444b0bd4288f604d44a1d274f3246c13310d6a59050b36f384280edb83938db81fa0544f7a2dc84ff6f440ff90b76ee62749fc1'
         '1d21307640a3844752c92e8344518daf6ad62d846689bebe6eed4dcadbf7b2e742862f5c17c0faee7256662cb75e62e124d59e5a5617e87324e1f0658f2b748d'
         '1e6ad252be5f603e022c854d391d4d768fb81d532a837203ab3b024dbb10f328c40a9579a19ab730de4e16f3841f15bfbcd1815ec913ac3d555811daf338ae6d'
-        '7358919041a3d5df1cac50f6519b282abe7a344f07b59d52ab95a022ce0af12e743a1c194fd838b5733f3900e68c7f0756a528ac32255775f2ba830a2f052dec')
+        '7358919041a3d5df1cac50f6519b282abe7a344f07b59d52ab95a022ce0af12e743a1c194fd838b5733f3900e68c7f0756a528ac32255775f2ba830a2f052dec'
+        'c08baf96faa47144366c0b6d2b08eb42bf594ee5809cecb6d16fafab7692f11348ee4c72c90401826b39ca9e858a1819d830007ac42d183bbcae2f362049816c')
 
 prepare() {
     sh "${_pkg}.run" --extract-only
@@ -38,6 +40,9 @@ prepare() {
 
     # 5.9 Patch
     patch -Np1 -i ../kernel-5.9.patch
+
+    # 5.10 Patch
+    patch -Np1 -i ../kernel-5.10.patch
 
     ## OLD PATCHES [390.132] ##
 
