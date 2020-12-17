@@ -11,7 +11,7 @@ pkgrel=7
 pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
 arch=('x86_64')
 url="https://www.nvidia.com/"
-makedepends=("nvidia-390xx-utils=${pkgver}" 'libglvnd' 'linux-headers')
+makedepends=("nvidia-390xx-utils=${pkgver}" 'libglvnd' 'linux-flat-headers')
 conflicts=('nvidia')
 license=('custom')
 options=('!strip')
@@ -72,14 +72,14 @@ DEST_MODULE_LOCATION[3]="/kernel/drivers/video"' dkms.conf
 
 build() {
     cd "${_pkg}"/kernel
-    make SYSSRC=/usr/src/linux module
+    make SYSSRC=/usr/src/linux-flat module
 }
 
 package_nvidia-390xx() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
-    depends=('linux' "nvidia-390xx-utils=${pkgver}" 'libglvnd')
+    depends=('linux-flat' "nvidia-390xx-utils=${pkgver}" 'libglvnd')
 
-    _extradir="/usr/lib/modules/$(</usr/src/linux/version)/extramodules"
+    _extradir="/usr/lib/modules/$(</usr/src/linux-flat/version)/extramodules"
     install -Dt "${pkgdir}${_extradir}" -m644 \
       "${srcdir}/${_pkg}/kernel"/nvidia{,-modeset,-drm,-uvm}.ko
 
