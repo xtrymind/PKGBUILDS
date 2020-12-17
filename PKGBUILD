@@ -7,7 +7,7 @@
 pkgbase=nvidia-390xx
 pkgname=(nvidia-390xx nvidia-390xx-dkms)
 pkgver=390.138
-pkgrel=7
+pkgrel=8
 pkgdesc="NVIDIA drivers for linux, 390xx legacy branch"
 arch=('x86_64')
 url="https://www.nvidia.com/"
